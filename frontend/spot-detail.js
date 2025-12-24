@@ -24,15 +24,15 @@ async function loadSpotDetails() {
 
     // ログアウト後もレビュー投稿フォームが表示される
     // 本来はログイン状態を確認してフォーム表示を制御すべき
-    // loadUserFromStorage();
-    // if (isLoggedIn) {
-    //     document.getElementById('loginNotice').style.display = 'none';
-    //     document.getElementById('reviewForm').style.display = 'block';
-    //     if (currentUser) {
-    //         document.getElementById('reviewerName').value = currentUser.name;
-    //         document.getElementById('reviewerName').readOnly = true;
-    //     }
-    // }
+    loadUserFromStorage();
+    if (isLoggedIn) {
+        document.getElementById('loginNotice').style.display = 'none';
+        document.getElementById('reviewForm').style.display = 'block';
+        if (currentUser) {
+            document.getElementById('reviewerName').value = currentUser.name;
+            document.getElementById('reviewerName').readOnly = true;
+        }
+    }
 
     // バグ: 常にフォームを表示してしまう
     document.getElementById('loginNotice').style.display = 'none';
@@ -247,10 +247,11 @@ async function submitReview(event) {
     // }
 
     // バグ: レビュー内容の空チェックがコメントアウトされている
-    // if (!text.trim()) {
-    //     alert('レビュー内容を入力してください');
-    //     return;
-    // }
+    if (!text.trim()) {
+        alert('レビュー内容を入力してください');
+        return;
+    }
+    text = text.trim()
 
     // 既存レビューの有無をチェック
     try {
