@@ -22,6 +22,7 @@ class EventRepository:
             return []
         finally:
             close_db(conn)
+            
 
     def find_by_month(self, month):
         """月別でイベントを取得"""
@@ -33,7 +34,11 @@ class EventRepository:
             cursor = conn.cursor()
             # 月の範囲チェックがない（13月なども受け付ける）
             # 月の形式は "01", "02", ... "12"
-            if not 1 <= int(month) <= 12: raise ValueError('月は1〜12の範囲で指定してください')
+            try:
+                if not 1 <= int(month) <= 12:
+                    raise ValueError('月は1〜12の範囲で指定してください')
+            except ValueError as e:
+                print("error: {e}")
             month_str = f'{int(month):02d}'
             cursor.execute('''
                 SELECT * FROM events
